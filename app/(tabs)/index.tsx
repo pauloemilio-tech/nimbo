@@ -1,98 +1,78 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+import { ScreenContainer } from '@/src/components/ScreenContainer';
+import { colors, radii, spacing, typography } from '@/src/constants/theme';
 
 export default function HomeScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
-
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <ScreenContainer contentContainerStyle={styles.container}>
+      <View style={styles.intro}>
+        <Text style={styles.eyebrow}>SEU COMPANHEIRO DE FOCO</Text>
+        <Text accessibilityRole="header" style={styles.title}>Olá, eu sou o Nimbo!</Text>
+        <Text style={styles.description}>
+          Seu tempo longe da tela me ajuda a crescer, ficar mais feliz e descobrir novas formas.
+        </Text>
+      </View>
+      <View accessibilityLabel="Espaço reservado para o futuro personagem Nimbo" style={styles.cloudCard}>
+        <Text style={styles.cloudEmoji}>☁️</Text>
+        <Text style={styles.cloudHint}>futuro personagem</Text>
+      </View>
+      <View accessibilityLabel="Você tem zero gotas" style={styles.dropsCard}>
+        <Text style={styles.dropEmoji}>💧</Text>
+        <View>
+          <Text style={styles.dropsLabel}>SUAS GOTAS</Text>
+          <Text style={styles.dropsValue}>0 gotas</Text>
+        </View>
+      </View>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityHint="Este botão será ativado em uma etapa futura"
+        style={({ pressed }) => [styles.primaryButton, pressed && styles.primaryButtonPressed]}>
+        <Text style={styles.primaryButtonText}>Começar uma jornada</Text>
+      </Pressable>
+    </ScreenContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
+  container: { gap: spacing.xl },
+  intro: { gap: spacing.sm },
+  eyebrow: { ...typography.caption, color: colors.primary },
+  title: { ...typography.title, color: colors.text },
+  description: { ...typography.body, color: colors.textMuted },
+  cloudCard: {
+    minHeight: 210,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.sm,
+    borderRadius: radii.xl,
+    backgroundColor: colors.cloud,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  cloudEmoji: { fontSize: 72 },
+  cloudHint: { ...typography.caption, color: colors.textMuted },
+  dropsCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: spacing.md,
+    padding: spacing.lg,
+    borderRadius: radii.lg,
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  dropEmoji: { fontSize: 30 },
+  dropsLabel: { ...typography.caption, color: colors.textMuted },
+  dropsValue: { ...typography.subtitle, color: colors.text },
+  primaryButton: {
+    minHeight: 52,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: spacing.lg,
+    borderRadius: radii.full,
+    backgroundColor: colors.primary,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
+  primaryButtonPressed: { opacity: 0.86 },
+  primaryButtonText: { ...typography.button, color: colors.surface },
 });
