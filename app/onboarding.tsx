@@ -13,6 +13,7 @@ import {
 
 import { ScreenContainer } from '@/src/components/ScreenContainer';
 import { colors, radii, spacing, typography } from '@/src/constants/theme';
+import { useGame } from '@/src/context/GameContext';
 
 const MIN_NAME_LENGTH = 2;
 const MAX_NAME_LENGTH = 16;
@@ -36,17 +37,18 @@ function getNameError(name: string): string | null {
 }
 
 export default function OnboardingScreen() {
+  const { completeOnboarding } = useGame();
   const [name, setName] = useState('');
   const [hasInteracted, setHasInteracted] = useState(false);
   const nameError = getNameError(name);
   const isNameValid = nameError === null;
 
-  function handleConfirm() {
+  async function handleConfirm() {
     if (!isNameValid) {
       return;
     }
 
-    setName(name.trim());
+    await completeOnboarding(name.trim());
     router.replace('/(tabs)');
   }
 
@@ -86,7 +88,7 @@ export default function OnboardingScreen() {
               setName(value);
               setHasInteracted(true);
             }}
-            onSubmitEditing={handleConfirm}
+            onSubmitEditing={() => void handleConfirm()}
             placeholder="Ex.: Floquinho"
             placeholderTextColor={colors.textMuted}
             returnKeyType="done"
@@ -105,7 +107,7 @@ export default function OnboardingScreen() {
           accessibilityHint="Abre a tela inicial do aplicativo"
           accessibilityRole="button"
           disabled={!isNameValid}
-          onPress={handleConfirm}
+          onPress={() => void handleConfirm()}
           style={({ pressed }) => [
             styles.button,
             !isNameValid && styles.buttonDisabled,
