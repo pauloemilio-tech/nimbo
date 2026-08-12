@@ -14,7 +14,8 @@ export default function RootLayout() {
           ...DefaultTheme,
           colors: { ...DefaultTheme.colors, background: colors.sky, primary: colors.primary },
         }}>
-        <Stack screenOptions={{ headerShown: false }}>
+        <Stack initialRouteName="onboarding" screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="onboarding" />
           <Stack.Screen name="(tabs)" />
         </Stack>
         <StatusBar style="dark" />
