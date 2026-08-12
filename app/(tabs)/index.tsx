@@ -2,13 +2,16 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { ScreenContainer } from '@/src/components/ScreenContainer';
 import { colors, radii, spacing, typography } from '@/src/constants/theme';
+import { useGame } from '@/src/context/GameContext';
 
 export default function HomeScreen() {
+  const { state } = useGame();
+
   return (
     <ScreenContainer contentContainerStyle={styles.container}>
       <View style={styles.intro}>
         <Text style={styles.eyebrow}>SEU COMPANHEIRO DE FOCO</Text>
-        <Text accessibilityRole="header" style={styles.title}>Olá, eu sou o Nimbo!</Text>
+        <Text accessibilityRole="header" style={styles.title}>Olá, eu sou {state.nimbo.name}!</Text>
         <Text style={styles.description}>
           Seu tempo longe da tela me ajuda a crescer, ficar mais feliz e descobrir novas formas.
         </Text>
